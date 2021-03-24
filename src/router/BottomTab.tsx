@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from 'react-native-vector-icons/Ionicons';
-import { ChatHomeScreen } from '../delete/screens/Home';
+import { ChatHomeScreen } from '../chat/screens/Home';
 import { FeedScreen } from '../Products/screens';
 
 const Tab = createBottomTabNavigator<any>();

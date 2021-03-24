@@ -1,13 +1,19 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import { BottomTab } from './BottomTab';
-import { ProductListScreen } from '../Products/screens/ProdList';
-import { ChatStack } from '../delete/router';
+import { connect } from "react-redux";
 
+// Components and Screens
+import { ChatStack } from '../chat/router';
+import { ProductListScreen } from '../Products/screens/ProdList';
+import { LoadingScreen } from "../global/screens";
+
+
+// Constant declaration
 const Stack = createStackNavigator();
 
-export function MainRouter() {
+export function MainRouter(props: any) {
+
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="BottomTab" component={BottomTab} />
@@ -17,5 +23,6 @@ export function MainRouter() {
     </Stack.Navigator>
   );
 }
+
 
 
