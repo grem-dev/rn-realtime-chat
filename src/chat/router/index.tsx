@@ -3,16 +3,11 @@ import { View, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { ChatScreen } from '../screens/Chat';
+import { ChatStackParamList } from '../../types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<ChatStackParamList>();
 
 export function ChatStack(props: any) {
-
-  useEffect(() => {
-    console.log('========================================00');
-    console.log(props.route.params);
-  });
-
   return (
     <Stack.Navigator>
       <Stack.Screen name="Chat" component={ChatScreen} />

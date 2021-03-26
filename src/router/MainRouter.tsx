@@ -6,11 +6,11 @@ import { connect } from "react-redux";
 // Components and Screens
 import { ChatStack } from '../chat/router';
 import { ProductListScreen } from '../Products/screens/ProdList';
-import { LoadingScreen } from "../global/screens";
+import { MainRouterParamList } from '../types';
 
 
 // Constant declaration
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<MainRouterParamList>();
 
 export function MainRouter(props: any) {
 

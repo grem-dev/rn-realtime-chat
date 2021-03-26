@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { ChatHomeScreen } from '../chat/screens/Home';
 import { FeedScreen } from '../Products/screens';
 
+// TODO: Completa los tipos de esta cosa xD
+// Al igual que las demas rutas, esta cosa necesita una definición de tipos para poder funcionar correctamente
 const Tab = createBottomTabNavigator<any>();
 
 export function BottomTab() {

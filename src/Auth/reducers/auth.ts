@@ -17,6 +17,7 @@ export function AuthReducerFunction(prevState = InitialState, action: AuthReduce
     case AuthReducerActionType.LOGIN_SUCCESS:
       return {
         ...prevState,
+        loading: false,
         authData: action.data,
       }
     case AuthReducerActionType.LOGOUT_REQUEST:
@@ -25,6 +26,11 @@ export function AuthReducerFunction(prevState = InitialState, action: AuthReduce
         loading: true,
       };
     case AuthReducerActionType.LOGOUT_SUCCESS:
+      return {
+        loading: false,
+        authData: {},
+      };
+    case AuthReducerActionType.LOCALSIGNIN_FAIL:
       return {
         loading: false,
         authData: {},

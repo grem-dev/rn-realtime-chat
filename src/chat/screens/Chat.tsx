@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/core';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-
 
 import Icon from 'react-native-vector-icons/Ionicons'
 import {
@@ -18,11 +16,14 @@ import {
   SendBtn
 } from "./style";
 
+// Types declaration
+import { ChatStackParamList } from '../../types';
+type Props = StackScreenProps<ChatStackParamList, 'Chat'>;
 
+export const ChatScreen = (props: Props): JSX.Element => {
+  const { navigation, route: { params } } = props;
 
-export const ChatScreen = ({ route: { params }, navigation }: StackScreenProps<any>): any => {
-  const { goBack } = useNavigation();
-
+  //TODO: This should be on the message store
   const [messages, setMessages] = useState<any>([]);
   const [currMsg, setCurrMsg] = useState<any>('');
 
@@ -30,20 +31,16 @@ export const ChatScreen = ({ route: { params }, navigation }: StackScreenProps<a
   const inputRef = useRef<any>();
 
   useEffect(() => {
-    console.log(navigation);
-    console.log(params)
-    console.log('Rendering again')
     navigation.setOptions({
-      title: params?.name,
+      title: params?.chatName,
     });
     return () => { }
   }, []);
 
-  function _renderMsg({ content, user = '' }: any, index: number) {
+  // TODO: Message factory
+  function _renderMsg({ content, user }: any, index: number) {
     const isSelf = user == 'Fede';
-    console.log(isSelf)
-    console.log(user)
-    const Wrapper = user == 'Fede' ? SelfMessage : Message;
+    const Wrapper = isSelf ? SelfMessage : Message;
     return (
       <Wrapper key={index}>
         <MsgUsername>{user} </MsgUsername>
