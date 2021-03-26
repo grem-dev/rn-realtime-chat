@@ -52,11 +52,13 @@ function SignInScreen(props: Props) {
         <Text style={{
           textAlign: 'center', justifyContent: 'center',
           textAlignVertical: 'center',
-          width: '100%', height: 40, padding: 5,
+          height: 40, 
+          padding: 5, margin: 5,
+          borderRadius: 15,
           backgroundColor:
             signinDisabled ?
               'rgb(200, 20, 50)' :
-              'rgb(20, 20, 100)',
+              'rgb(100, 20, 200)',
           color: 'white'
         }}>{signinDisabled ? 'Loading...' : 'SignIn'}</Text>
       </TouchableOpacity>
@@ -69,7 +71,7 @@ function SignInScreen(props: Props) {
         }}
         onPress={() => { navigation.navigate('SignUp', { email, password }) }}
       >Sin cuenta aún?</Text>
-    </View>
+    </View >
   );
 }
 

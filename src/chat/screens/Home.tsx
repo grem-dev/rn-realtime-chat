@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, Button, Touchable } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 import { connect, ConnectedProps } from 'react-redux';
@@ -115,6 +115,7 @@ const ChatHomeScreen = (props: Props): any => {
         <Text style={{
           height: 40,
           color: 'white',
+          borderRadius: 14,
           backgroundColor: 'rgb(100, 20, 200)',
           padding: 5,
           margin: 5,

@@ -6,8 +6,7 @@ export function AuthReducerFunction(prevState = InitialState, action: AuthReduce
   switch (action.type) {
     case AuthReducerActionType.LOGIN_REQUEST:
       return {
-        ...prevState,
-        loading: true,
+        ...prevState,loading: false,
       }
     case AuthReducerActionType.LOGIN_FAILURE:
       return {

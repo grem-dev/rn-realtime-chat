@@ -1,3 +1,4 @@
+import { Ok, ServerError, Unauthorized } from "../../global/services/response/NetworkRequest";
 import { AuthConstants } from "../constants"
 
 const base_url = `${AuthConstants.AUTH_API}/api/v1`;
@@ -54,8 +55,37 @@ async function SignUp({ email, password, name }: SignUpProps) {
   }
 };
 
+interface VerifyCredentialsProps {
+  token: string;
+  refreshToken: string;
+}
+
+async function VerifyCredentials({ token, refreshToken }: VerifyCredentialsProps) {
+  try {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token, refreshToken
+      })
+    }
+    const res = await fetch(`${base_url}/accounts/verifyCredentials`, options);
+
+    if (res.status == 401)
+      return Unauthorized();
+
+    const payload = await res.json();
+    return Ok(payload as object);
+  } catch (err) {
+    console.error(err.message);
+    return ServerError();
+  }
+}
 
 export const AuthServices = {
   SignIn,
-  SignUp
+  SignUp,
+  VerifyCredentials,
 }
