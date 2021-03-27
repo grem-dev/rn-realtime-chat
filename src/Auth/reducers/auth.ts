@@ -4,27 +4,27 @@ const InitialState: AuthState = { loading: true, authData: {} };
 
 export function AuthReducerFunction(prevState = InitialState, action: AuthReducerAction): AuthState {
   switch (action.type) {
-    case AuthReducerActionType.LOGIN_REQUEST:
+    case AuthReducerActionType.SIGNIN_REQUEST:
       return {
-        ...prevState,loading: false,
+        ...prevState, loading: false,
       }
-    case AuthReducerActionType.LOGIN_FAILURE:
+    case AuthReducerActionType.SIGNIN_FAILURE:
       return {
         ...prevState,
         loading: false,
       }
-    case AuthReducerActionType.LOGIN_SUCCESS:
+    case AuthReducerActionType.SIGNIN_SUCCESS:
       return {
         ...prevState,
         loading: false,
         authData: action.data,
       }
-    case AuthReducerActionType.LOGOUT_REQUEST:
+    case AuthReducerActionType.SIGNOUT_REQUEST:
       return {
         ...prevState,
         loading: true,
       };
-    case AuthReducerActionType.LOGOUT_SUCCESS:
+    case AuthReducerActionType.SIGNOUT_SUCCESS:
       return {
         loading: false,
         authData: {},
@@ -34,6 +34,23 @@ export function AuthReducerFunction(prevState = InitialState, action: AuthReduce
         loading: false,
         authData: {},
       };
+    case AuthReducerActionType.SIGNUP_REQUEST:
+      return {
+        ...prevState,
+        loading: false,
+      }
+    case AuthReducerActionType.SIGNUP_SUCCESS:
+      return {
+        ...prevState,
+        loading: false,
+        authData: action.data
+      }
+    case AuthReducerActionType.SIGNUP_FAILURE:
+      return {
+        ...prevState,
+        loading: false,
+        authData: {}
+      }
     default:
       return { ...prevState };
   }

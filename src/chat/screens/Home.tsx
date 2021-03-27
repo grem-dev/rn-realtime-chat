@@ -1,13 +1,16 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import socket from 'socket.io-client';
 import { AuthActions } from '../../Auth/actions';
-import { AuthReduxState } from '../../Auth/types';
 import { MainRouterParamList } from '../../types';
+import {
+  AuthReducerAction, AuthReduxState,
+  AuthState, EventReducerAction, EventState
+} from '../../Auth/types';
 
 interface ILastMessage {
   content: string;
@@ -21,27 +24,27 @@ interface IChat {
   lastMessage: ILastMessage | undefined;
 }
 
-// Props definition
-const ActionsCreator = {
-  signout: AuthActions.SignOut,
-};
-const connector = connect((state: AuthReduxState) => state, ActionsCreator);
 
-type Props = ConnectedProps<typeof connector> & StackScreenProps<MainRouterParamList, 'ChatStack'>;
+type Props = StackScreenProps<MainRouterParamList, 'ChatStack'>;
 
-const ChatHomeScreen = (props: Props): any => {
-  const { auth: { authData }, navigation } = props;
+export const ChatHomeScreen = (props: Props) => {
+
+  const { authData } = useSelector<AuthReduxState, AuthState>(s => s.auth);
+  const { events } = useSelector<AuthReduxState, EventState>(s => s.events);
   const { refreshToken, token } = authData;
 
-  const [io, setIO] = useState(socket.io('http://192.168.43.23:3003', {
-    auth: {
-      token, refreshToken
-    }
-  }));
+  const authDispacher = useDispatch<Dispatch<AuthReducerAction>>();
+  const eventDispacher = useDispatch<Dispatch<EventReducerAction>>();
 
+  // Local State and instances
+  const [io, setIO] = useState(
+    socket.io('http://192.168.43.23:3003', { auth: { token, refreshToken } })
+  );
   const [chats, setChats] = useState<IChat[]>([]);
 
+
   useEffect(() => {
+
     fetch('http://192.168.43.23:3003/api/v1/accounts', {
       method: 'GET',
       headers: {
@@ -84,10 +87,14 @@ const ChatHomeScreen = (props: Props): any => {
     }
   }, []);
 
+
+
   function _onPressChat(chatData: IChat) {
-    navigation.navigate('ChatStack', { screen: 'Chat', params: { chatId: chatData.id, chatName: chatData.name } });
+    props.navigation.navigate('ChatStack', { screen: 'Chat', params: { chatId: chatData.id, chatName: chatData.name } });
   }
 
+
+  // TODO: Move to single component
   function _renderChat(c: IChat) {
     return (
       <TouchableHighlight key={c.id} onPress={() => _onPressChat(c)}>
@@ -109,7 +116,7 @@ const ChatHomeScreen = (props: Props): any => {
     <View>
       <TouchableHighlight
         onPress={() => {
-          props.signout();
+          AuthActions.SignOut()(authDispacher);
         }}
       >
         <Text style={{
@@ -134,5 +141,5 @@ const ChatHomeScreen = (props: Props): any => {
   )
 }
 
-const ConnectedScreen = connector(ChatHomeScreen);
-export { ConnectedScreen as ChatHomeScreen };
+// const ConnectedScreen = connector(ChatHomeScreen);
+// export { ConnectedScreen as ChatHomeScreen };

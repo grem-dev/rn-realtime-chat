@@ -1,41 +1,71 @@
-import { ParamListBase } from '@react-navigation/routers';
+import React, { Dispatch, useState } from 'react';
+import { Text, TextInput } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import { useDispatch, useStore } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useState } from 'react';
-import { View, Text, TextInput } from 'react-native';
-import { connect, ConnectedProps } from 'react-redux';
-import { AuthStackParamList } from '../types';
 
-const ActionsCreator = {};
-const connector = connect(state => state, ActionsCreator);
+import { AuthReducerAction, AuthStackParamList, AuthState } from '../types';
+import { AuthActions } from '../actions';
+import { GlobalReducerAction } from '../../global/types';
 
-type Props = ConnectedProps<typeof connector> & StackScreenProps<AuthStackParamList, 'SignUp'>;
 
-function SignUpScreen(props: Props) {
+type Props = StackScreenProps<AuthStackParamList, 'SignUp'>;
+
+export function SignUpScreen(props: Props) {
   const { route: { params } } = props;
 
+  const authDispacher = useDispatch<Dispatch<AuthReducerAction>>();
+
+  // Local state
   const [email, setEmail] = useState<string>(params.email || '');
   const [password, setPassword] = useState<string>(params.password || '');
-
+  const [name, setName] = useState<string>('');
   const [processing, setProcessing] = useState<boolean>(false);
 
   return (
-    <View>
-      <>
-        <TextInput
-          value={email}
-          onChangeText={setEmail}
-          autoCompleteType="email"
-          placeholder="Email" />
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          autoCompleteType="password"
-          textContentType="password"
-          placeholder="password" />
-      </>
-    </View>
+    <>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        autoCompleteType="name"
+        placeholder="Name" />
+      <TextInput
+        value={email}
+        onChangeText={setEmail}
+        autoCompleteType="email"
+        placeholder="Email" />
+      <TextInput
+        value={password}
+        onChangeText={setPassword}
+        autoCompleteType="password"
+        textContentType="password"
+        secureTextEntry
+        placeholder="password" />
+      <TouchableOpacity
+        disabled={processing}
+        onPress={() => {
+          AuthActions.SignUp({ email, password, name })(authDispacher);
+          setProcessing(true);
+        }}
+      >
+        <Text style={{
+          textAlign: 'center', justifyContent: 'center',
+          textAlignVertical: 'center',
+          height: 40,
+          padding: 5, margin: 5,
+          borderRadius: 15,
+          backgroundColor:
+            processing ?
+              'rgb(200, 20, 50)' :
+              'rgb(100, 20, 200)',
+          color: 'white'
+        }}>{processing ? 'Loading...' : 'SignIn'}</Text>
+      </TouchableOpacity>
+    </>
   );
 }
 
-const ConnectedScreen = connector(SignUpScreen);
-export { ConnectedScreen as SignUpScreen };
+// const ConnectedScreen = connect(
+//   (s: AuthState) => s, {}, null, { context: AuthContext })(SignUpScreen);
+// export { ConnectedScreen as SignUpScreen };

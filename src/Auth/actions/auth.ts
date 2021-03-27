@@ -16,24 +16,24 @@ export interface SignUpActionProps {
 
 function SignIn({ email, password }: SignInActionProps) {
   return async (dispatch: Dispatch<AuthReducerAction>) => {
-    dispatch({ type: AuthReducerActionType.LOGIN_REQUEST, data: {} });
+    dispatch({ type: AuthReducerActionType.SIGNIN_REQUEST, data: {} });
     try {
       const res = await AuthServices.SignIn({ email, password });
 
       // Persisting user credentials
       await SaveSession('usersession', res);
 
-      return dispatch({ type: AuthReducerActionType.LOGIN_SUCCESS, data: res });
+      return dispatch({ type: AuthReducerActionType.SIGNIN_SUCCESS, data: res });
     } catch (err) {
       console.error(err.message);
-      dispatch({ type: AuthReducerActionType.LOGIN_FAILURE, data: {} });
+      dispatch({ type: AuthReducerActionType.SIGNIN_FAILURE, data: {} });
     }
   }
 }
 
 function SignUp({ email, password, name }: SignUpActionProps) {
   return (dispatch: Dispatch<AuthReducerAction>) => {
-
+    dispatch({ type: AuthReducerActionType.SIGNUP_REQUEST, data: {} });
   }
 }
 
@@ -41,7 +41,7 @@ function SignUp({ email, password, name }: SignUpActionProps) {
 function SignOut() {
   return async function (dispatch: Dispatch<AuthReducerAction>) {
     await RemoveSession('usersession');
-    return dispatch({ type: AuthReducerActionType.LOGOUT_SUCCESS, data: {} })
+    return dispatch({ type: AuthReducerActionType.SIGNOUT_SUCCESS, data: {} })
   }
 }
 
@@ -56,7 +56,7 @@ function SignInFromAsyncStorage(username?: string) {
     const res = await CallAuthTokenVerifycation(data.token, data.refreshToken);
 
     if (res.code == 200)
-      return dispatch({ type: AuthReducerActionType.LOGIN_SUCCESS, data: res.value as AuthStateData });
+      return dispatch({ type: AuthReducerActionType.SIGNIN_SUCCESS, data: res.value as AuthStateData });
 
     RemoveSession('usersession');
     return dispatch({ type: AuthReducerActionType.LOCALSIGNIN_FAIL, data: {} });

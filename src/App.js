@@ -9,7 +9,7 @@ import { AppRouter } from './router';
 export function App() {
   return (
     <NavigationContainer>
-      <Provider store={AuthStore}>
+      <Provider store={AuthStore} >
         <AppRouter />
       </Provider>
     </NavigationContainer>

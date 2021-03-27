@@ -1,33 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { Dispatch, useEffect } from 'react';
 
 // State management
-import { connect, ConnectedProps } from "react-redux";
-
-// Importing main Routers
-import { MainRouter } from './MainRouter';
-import { LoadingScreen } from '../global/screens';
-import { AuthReduxState, AuthState } from '../Auth/types';
+import { useDispatch, useSelector } from "react-redux";
 import { AuthRouter } from '../Auth/router';
 import { AuthActions } from '../Auth/actions';
+import {
+  AuthReducerAction,
+  AuthReduxState,
+  AuthState
+} from '../Auth/types';
 
-const actionsCreator = {
-  signInFromAsyncStorage: AuthActions.SignInFromAsyncStorage,
-};
-const connector = connect((state: AuthReduxState) => state, actionsCreator);
-type Props = ConnectedProps<typeof connector>;
+// Importing Routers and screens
+import { MainRouter } from './MainRouter';
+import { LoadingScreen } from '../global/screens';
 
-function AppRouter(props: Props) {
-  const { token, refreshToken } = props.auth.authData;
+
+export function AppRouter() {
+
+  const { authData, loading } = useSelector<AuthReduxState, AuthState>(s => s.auth);
+  const { refreshToken, token } = authData;
+  const dispatch = useDispatch<Dispatch<AuthReducerAction>>();
 
   useEffect(() => {
     if (!token || !refreshToken)
-      props.signInFromAsyncStorage();
+      AuthActions.SignInFromAsyncStorage()(dispatch);
 
     return () => { /* Reset state to loading */ }
   }, []);
 
   // Returning loading screen
-  if (props.auth.loading)
+  if (loading)
     return <LoadingScreen />;
 
   // Main router when is logged in
@@ -37,6 +39,3 @@ function AppRouter(props: Props) {
   // Otherwise Auth router to SignIn or SignUp
   return <AuthRouter />
 }
-
-const MappedRouter = connector(AppRouter);
-export { MappedRouter as AppRouter };
