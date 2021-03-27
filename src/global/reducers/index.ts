@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import { AuthReducerFunction } from "../../Auth/reducers/auth";
-import { GlobalReduxState } from "../types";
-import { GlobalReducer } from "./global";
+import { EventReducerFunction } from "./event";
+import { AppCombinedState } from "../types.d";
 
-export const globalReducer = combineReducers<GlobalReduxState>({
-  global: GlobalReducer,
-  auth: AuthReducerFunction
+export const AppReducer = combineReducers<AppCombinedState>({
+  event: EventReducerFunction,
+  auth: AuthReducerFunction,
 });

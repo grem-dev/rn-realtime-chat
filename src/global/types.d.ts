@@ -1,27 +1,27 @@
-import { AuthState } from "../Auth/types";
+import { AuthState } from "../Auth/types.d";
 
-
-export enum GlobalActionType {
+export enum EventActionType {
   "ADD_EVENT",
   "DELETE_EVENT",
 }
+
+/* EVENT STATE */
 export interface Event {
   key: string;
   payload?: string;
 }
 
-export interface GlobalState {
+export interface EventState {
   events: Event[]
 }
 
-export interface GlobalReducerAction {
-  type: GlobalActionType;
+export interface EventReducerAction {
+  type: EventActionType;
   data: Event;
 }
 
-
-// Redux definitions
-export interface GlobalReduxState {
-  global: GlobalState,
-  auth: AuthState
+// FINAL REDUX STATE
+export interface AppCombinedState {
+  auth: AuthState,
+  event: EventState
 }

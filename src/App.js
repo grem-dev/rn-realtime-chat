@@ -3,13 +3,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 
 // Components and Screens
-import { AuthStore } from './Auth/helpers/store';
+import { AppStore } from './global/helper';
 import { AppRouter } from './router';
 
 export function App() {
   return (
     <NavigationContainer>
-      <Provider store={AuthStore} >
+      <Provider store={AppStore} >
         <AppRouter />
       </Provider>
     </NavigationContainer>

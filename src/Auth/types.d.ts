@@ -1,9 +1,4 @@
 
-export enum EventActionType {
-  "ADD_EVENT",
-  "DELETE_EVENT",
-}
-
 export enum AuthReducerActionType {
   "SIGNIN_REQUEST",
   "SIGNIN_FAILURE",
@@ -18,24 +13,6 @@ export enum AuthReducerActionType {
 
   "LOCALSIGNIN_FAIL",
 }
-
-
-/* EVENT STATE */
-export interface Event {
-  key: string;
-  payload?: string;
-}
-
-export interface EventState {
-  events: Event[]
-}
-
-export interface EventReducerAction {
-  type: EventActionType;
-  data: Event;
-}
-
-/* AUTH STATE */
 
 export interface AuthStateData {
   token: string;
@@ -53,8 +30,7 @@ export interface AuthReducerAction {
   data: Partial<AuthStateData>;
 }
 
-
-// ROUTER TYPES
+// Navigation Definitions
 
 export type AuthStackParamList = {
   SignIn: {},
@@ -62,10 +38,4 @@ export type AuthStackParamList = {
     email: string;
     password: string;
   }
-}
-
-// FINAL REDUX STATE
-export interface AuthReduxState {
-  auth: AuthState,
-  events: EventState
 }

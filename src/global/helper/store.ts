@@ -1,9 +1,9 @@
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
-import { globalReducer } from "../reducers";
+import { AppReducer } from "../reducers";
 
-export const GlobalStore = createStore(
-  globalReducer,
+export const AppStore = createStore(
+  AppReducer,
   applyMiddleware(
     thunk,
   )

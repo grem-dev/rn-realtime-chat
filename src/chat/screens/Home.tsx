@@ -4,13 +4,15 @@ import { Text, View, ScrollView } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 import { useDispatch, useSelector } from 'react-redux';
-import socket from 'socket.io-client';
 import { AuthActions } from '../../Auth/actions';
 import { MainRouterParamList } from '../../types';
 import {
-  AuthReducerAction, AuthReduxState,
+  AppCombinedState, AuthReducerAction,
   AuthState, EventReducerAction, EventState
-} from '../../Auth/types';
+} from '../../global/types.d';
+
+import socket from 'socket.io-client';
+
 
 interface ILastMessage {
   content: string;
@@ -29,8 +31,8 @@ type Props = StackScreenProps<MainRouterParamList, 'ChatStack'>;
 
 export const ChatHomeScreen = (props: Props) => {
 
-  const { authData } = useSelector<AuthReduxState, AuthState>(s => s.auth);
-  const { events } = useSelector<AuthReduxState, EventState>(s => s.events);
+  const { authData } = useSelector<AppCombinedState, AuthState>(s => s.auth);
+  const { events } = useSelector<AppCombinedState, EventState>(s => s.event);
   const { refreshToken, token } = authData;
 
   const authDispacher = useDispatch<Dispatch<AuthReducerAction>>();
