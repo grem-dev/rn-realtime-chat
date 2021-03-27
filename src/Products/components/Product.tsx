@@ -7,7 +7,6 @@ const {Container, Data, Picture} = SProduct;
 
 export function Product({name, price}: IProduct) {
   function _onPress() {
-    console.log('Ay loca, no me golpees xD');
   }
   return (
     <TouchableOpacity onPress={_onPress}>

@@ -12,6 +12,8 @@ import {
 import { MainRouterParamList } from '../../types';
 import { AuthState } from '../../Auth/types';
 import { IChat } from '../types.d';
+import { ChatMenuCard } from '../components/ChatMenuCard';
+import { HistoriList } from '../components/HistoryList';
 
 
 
@@ -55,7 +57,6 @@ export const ChatHomeScreen = (props: Props) => {
       setChats((prev) => {
         return prev.map((c): IChat => {
           if (c.id === data.from) {
-            console.log(data)
             return {
               ...c, lastMessage: {
                 content: data.content,
@@ -74,35 +75,17 @@ export const ChatHomeScreen = (props: Props) => {
     }
   }, []);
 
-  function _onPressChat(chatData: IChat) {
-    props.navigation.navigate('ChatStack', { screen: 'Chat', params: { chatId: chatData.id, chatName: chatData.name } });
-  }
-
-  // TODO: Move to single component
-  function _renderChat(c: IChat) {
-    return (
-      <TouchableHighlight key={c.id} onPress={() => _onPressChat(c)}>
-        <View style={{ backgroundColor: 'white', minHeight: 60, padding: 10, elevation: 1 }}>
-          <Text>{c.name}</Text>
-          {c.lastMessage && (
-            <>
-              <Text style={{ fontWeight: 'bold' }}>{c.lastMessage.content}</Text>
-              <Text style={{ fontSize: 9, color: 'gray', textAlign: 'right' }}>{c.lastMessage.date}</Text>
-            </>
-          )}
-        </View>
-      </TouchableHighlight>
-    )
-  }
-
   return (
-    <View>
+    <View style={{ backgroundColor: 'white' }}>
       <Text>User: {authData.accountId}</Text>
-      {/* <Text>RefreshToken: {auth.authData.refreshToken}</Text> */}
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+      >
+        <HistoriList />
         {
-          chats.map(_renderChat)
+          chats.map((c) => <ChatMenuCard key={c.id} {...c} />)
         }
+        <Text>---</Text>
       </ScrollView>
     </View >
   )
